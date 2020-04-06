@@ -36,6 +36,12 @@
     <ClCompile Include="CommandResolver.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Sha256.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MD5_Cus.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Aes_Ecb.h">
@@ -54,6 +60,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CommandResolver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Sha256.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MD5_Cus.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

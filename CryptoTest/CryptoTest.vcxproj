@@ -160,7 +160,9 @@
     <ClCompile Include="Connector.cpp" />
     <ClCompile Include="Converter.cpp" />
     <ClCompile Include="CryptoTest.cpp" />
+    <ClCompile Include="MD5_Cus.cpp" />
     <ClCompile Include="Rsa_Oaep.cpp" />
+    <ClCompile Include="Sha256.cpp" />
     <ClCompile Include="Universal.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -168,7 +170,9 @@
     <ClInclude Include="CommandResolver.h" />
     <ClInclude Include="Connector.h" />
     <ClInclude Include="Converter.h" />
+    <ClInclude Include="MD5_Cus.h" />
     <ClInclude Include="Rsa_Oaep.h" />
+    <ClInclude Include="Sha256.h" />
     <ClInclude Include="Universal.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

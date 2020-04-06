@@ -25,6 +25,11 @@
 #include "time.h"
 #include "CommandResolver.h"
 #include "pssr.h"
+#include "hex.h"
+#include "sha.h"
+#include "MD5.h"
+#include "Sha256.h"
+#include "MD5_Cus.h"
 
 using namespace std;
 using namespace CryptoPP;
@@ -33,9 +38,80 @@ using namespace asio;
 
 #define BUFFER 1024
 #define IPADDR "127.0.0.1"
+char CHARSET[62];
+
+string source = "HAED";
+Sha256 sha;
+void crack(string* _str, int _curIndex = 0) {
+	for (int i = 0; i < 62; i++) {
+		(*_str)[_curIndex] = CHARSET[i];
+		
+		if (_curIndex != _str->size() - 1) {
+			crack(_str, _curIndex + 1);
+		}
+		else {
+			unsigned char _hash[32];
+
+			sha.GetHash(*_str, _hash);
+			if (sha.Verify(source, _hash)) {
+				cout << "Success : " << *_str << endl;
+				exit(0);
+			}
+			else {
+				cout << "Failed : " << *_str << endl;
+			}
+		}
+	}
+}
 
 int main()
 {
+	int j = 0;
+	for (int i = 'a'; i < 'a' + 26; i++,j++) {
+		CHARSET[j] = i;
+	}
+
+	for (int i = 'A'; i < 'A' + 26; i++, j++) {
+		CHARSET[j] = i;
+	}
+
+	for (int i = '0'; i < '0' + 10; i++, j++) {
+		CHARSET[j] = i;
+	}
+
+	unsigned char hash[32] = "";
+	unsigned char hashAfer[32] = "";
+	sha.GetHash(source, hash);
+	string* aa = new string(source.size(), 'a');
+	
+	string path = Universal::GetPath();
+	path.append("\\Hash.txt");
+
+	fstream file;
+	file.open(path, ios::out);
+
+	string ss = "";
+	string dd = "";
+	MD5_Cus md5;
+	
+	cout << "Type '\quit' to exit" << endl;
+
+	while (1) {
+		ss.clear();
+		dd.clear();
+		getline(cin, ss);
+
+		if (ss == "\quit");
+
+		md5.GetHash(ss, dd);
+		cout << dd << endl;
+
+		file << ss << "	Hash:  " << dd << endl;
+		cout << dd.size() << endl;
+	}
+
+	return 0;
+
 	Aes_Ecb aes;
 	Rsa_Oaep rsa;
 	Connector con(&rsa);

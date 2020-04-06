@@ -8,5 +8,6 @@ static class Converter
 {
 public:
 	static void StringToHex(string _s);
+	static void StringToHex(unsigned char* _s,int _size);
 };
 
