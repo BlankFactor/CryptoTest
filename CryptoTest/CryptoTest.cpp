@@ -66,6 +66,7 @@ void crack(string* _str, int _curIndex = 0) {
 
 int main()
 {
+	/*
 	int j = 0;
 	for (int i = 'a'; i < 'a' + 26; i++,j++) {
 		CHARSET[j] = i;
@@ -111,7 +112,7 @@ int main()
 	}
 
 	return 0;
-
+	*/
 	Aes_Ecb aes;
 	Rsa_Oaep rsa;
 	Connector con(&rsa);

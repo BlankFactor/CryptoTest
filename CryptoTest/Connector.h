@@ -24,6 +24,7 @@ private:
 	bool aesMode = true;
 
 	string hostName;
+	int port;
 
 	char message[BUFFER];
 
@@ -48,5 +49,7 @@ public:
 	void SendMess(const char* _mess);
 	void SendMess(char* _mess);
 	void RecvMess();
+
+	bool SetPort(int _value);
 };
 

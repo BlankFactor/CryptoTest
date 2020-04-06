@@ -5,6 +5,7 @@
 #define LISTEN 2
 #define ADDRESS 11
 #define MODE 12
+#define PORT 13
 #define SEND 3
 #define DECRYPTO 4
 #define SETKEY 5
@@ -66,7 +67,7 @@ unsigned int CommandResolver::StringToHash(const char* _str)
 
 void CommandResolver::displayCommands()
 {
-	cout << "孙哥说了算" << endl;
+	cout << "我孙哥说了算" << endl;
 }
 
 bool CommandResolver::Connect(vector<string> _com)
@@ -109,6 +110,25 @@ bool CommandResolver::Connect(vector<string> _com)
 					con->SetAESMode(false);
 				}
 				else {
+					cout << "[Resolver] : Inviald command" << endl;
+					return false;
+				}
+
+				it = _com.begin();
+				_com.erase(it, it + 2);
+
+				break;
+			}
+			case PORT: {
+				if (_com.size() == 1) {
+					cout << "[Resolver] : Inviald command" << endl;
+					return false;
+				}
+
+				string m = _com[1];
+				int newP = atoi(m.c_str());
+				if (!con->SetPort(newP)) 
+				{
 					cout << "[Resolver] : Inviald command" << endl;
 					return false;
 				}
@@ -201,6 +221,7 @@ CommandResolver::CommandResolver(Connector* _con, Aes_Ecb* _aes, Rsa_Oaep* _rsa)
 	map["\\\?"] = HELP;
 	map["-h"] = ADDRESS;
 	map["-m"] = MODE;
+	map["-p"] = PORT;
 }
 
 bool CommandResolver::Resolve(string _command)

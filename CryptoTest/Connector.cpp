@@ -4,6 +4,7 @@
 Connector::Connector(Rsa_Oaep* _rsa)
 {
 	rsa = _rsa;
+	port = PORT;
 	sock = new ip::tcp::socket(service);
 	acceptor = new ip::tcp::acceptor(service,ip::tcp::endpoint(ip::tcp::v4(),PORT));
 }
@@ -43,7 +44,7 @@ bool Connector::Connect(string _ipAddress)
 	try {
 		cout << "[Socket] : Start connectting " << _ipAddress << endl;
 		cout << "[Socket] : Connecting " << endl;
-		ternimal = new ip::tcp::endpoint(ip::address::from_string(_ipAddress), PORT);
+		ternimal = new ip::tcp::endpoint(ip::address::from_string(_ipAddress), port);
 		
 		sock->connect(*ternimal);
 
@@ -214,4 +215,15 @@ void Connector::RecvMess()
 		exit(0);
 	}
 
+}
+
+bool Connector::SetPort(int _value)
+{
+	if (_value > 1024 && _value < 65535) {
+		port = _value;
+		cout << "[Socket] : Set port -> " << port << endl;
+		return true;
+	}
+
+	return false;
 }
