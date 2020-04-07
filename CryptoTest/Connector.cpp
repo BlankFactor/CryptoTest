@@ -61,20 +61,22 @@ bool Connector::Connect(string _ipAddress)
 		sock->receive(buffer(temp, BUFFER));
 		cout << "接收到主机名 : " << temp << endl;
 
-		// 查询目标主机公钥是否存在
-		string targetPubKeyPath = Universal::GetPath();
-		targetPubKeyPath.append("\\");
-		targetPubKeyPath.append(temp);
-		targetPubKeyPath.append("_PublicKey.key");
+		if (!aesMode) {
+			// 查询目标主机公钥是否存在
+			string targetPubKeyPath = Universal::GetPath();
+			targetPubKeyPath.append("\\");
+			targetPubKeyPath.append(temp);
+			targetPubKeyPath.append("_PublicKey.key");
 
-		if (Universal::FileExist(targetPubKeyPath)) {
-			cout << "目标主机公钥存在" << endl;
-			rsa->LoadPublicKeyCoByHostName(temp);
-		}
-		else {
-			cout << "目标主机公钥不存在 断开连接" << endl;
-			sock->close();
-			return false;
+			if (Universal::FileExist(targetPubKeyPath)) {
+				cout << "目标主机公钥存在" << endl;
+				rsa->LoadPublicKeyCoByHostName(temp);
+			}
+			else {
+				cout << "目标主机公钥不存在 断开连接" << endl;
+				sock->close();
+				return false;
+			}
 		}
 
 		connected = true;
