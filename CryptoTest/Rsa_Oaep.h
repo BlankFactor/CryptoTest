@@ -7,11 +7,13 @@
 #include "fstream"
 #include "files.h"
 #include "pssr.h"
+#include "ICryptoFilter.h"
+#include "BObjectIdentity.h"
 
 using namespace std;
 using namespace CryptoPP;
 
-class Rsa_Oaep
+class Rsa_Oaep :public ICryptoFilter,public BObjectIdentity
 {
 private:
 	AutoSeededRandomPool rng;
@@ -60,9 +62,9 @@ public:
 	void baseURL64Decode(string _in, string& _out);
 
 	// 加密后编码 用于网络传输
-	void EncrypteAndEncode(string _cipherText, string& _out);
+	void EncrypteAndEncode(string _cipherText, string& _base64);
 	// 解码后解密 获得明文
-	void DecodeAndDecrypte(string _in, string& _plainText);
+	void DecodeAndDecrypte(string _base64, string& _plainText);
 };
 
 /*

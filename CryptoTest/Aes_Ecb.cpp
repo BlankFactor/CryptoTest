@@ -3,17 +3,18 @@
 using namespace std;
 using namespace CryptoPP;
 
-Aes_Ecb::Aes_Ecb(string _key)
+Aes_Ecb::Aes_Ecb(string _key) :BObjectIdentity(*this)
 {
 	cout << "[AES-ECB] : Initializing" << endl;
 	SetKey(_key);
 	cout << "[AES-ECB] : Initialized successfully" << endl;
 }
 
-Aes_Ecb::Aes_Ecb()
+Aes_Ecb::Aes_Ecb() :BObjectIdentity(*this)
 {
 	cout << "[AES-ECB] : Initializing" << endl;
 	strKey.append(16, 'a');
+	md5.GetHash16(strKey, strKey);
 	cout << "[AES-ECB] : Setting key -> ( " << strKey << " ) " << endl;
 	key.Assign((byte*)strKey.c_str(), strKey.size());
 
@@ -30,7 +31,7 @@ string Aes_Ecb::GetKey()
 void Aes_Ecb::SetKey(string _key)
 {
 	strKey = _key;
-	cout << "[AES-ECB] : Setting key -> ( " << strKey << " ) " << endl;
+
 
 	if (strKey.size() < 16) {
 		int count = 16 - strKey.size();
@@ -39,6 +40,9 @@ void Aes_Ecb::SetKey(string _key)
 	else {
 		strKey = strKey.substr(0, 16);
 	}
+
+	md5.GetHash16(strKey, strKey);
+	cout << "[AES-ECB] : Setting key -> ( " << strKey << " ) " << endl;
 
 	key.Assign((byte*)strKey.c_str(), strKey.size());
 
@@ -69,7 +73,7 @@ void Aes_Ecb::Encrypte(string _plainText, string& _buffer)
 	try
 	{
 		_buffer.clear();
-		StringSource ss(_plainText, true, new StreamTransformationFilter(encryptor, new StringSink(_buffer), BlockPaddingSchemeDef::PKCS_PADDING));
+		StringSource ss(_plainText, true, new StreamTransformationFilter(encryptor, new StringSink(_buffer), BlockPaddingSchemeDef::ZEROS_PADDING));
 	}
 	catch (CryptoPP::InvalidCiphertext e)
 	{
@@ -82,7 +86,7 @@ void Aes_Ecb::Decrypte(string _cipherText, string& _buffer)
 	try
 	{
 		_buffer.clear();
-		StringSource ss(_cipherText, true, new StreamTransformationFilter(decryptor, new StringSink(_buffer), BlockPaddingSchemeDef::PKCS_PADDING));
+		StringSource ss(_cipherText, true, new StreamTransformationFilter(decryptor, new StringSink(_buffer), BlockPaddingSchemeDef::ZEROS_PADDING));
 	}
 	catch (CryptoPP::InvalidCiphertext e)
 	{

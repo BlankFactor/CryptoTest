@@ -5,12 +5,14 @@
 #include "Aes_Ecb.h"
 #include "Rsa_Oaep.h"
 #include "Connector.h"
+#include "BObjectIdentity.h"
+#include "ObjectManager.h"
 
 using namespace std;
 
 #define connect StringToHash("\connect");
 
-class CommandResolver
+class CommandResolver:public BObjectIdentity
 {
 private:
 	Connector* con;
@@ -32,7 +34,7 @@ private:
 	bool SetKey(vector<string> _com);
 
 public:
-	CommandResolver(Connector* _con, Aes_Ecb* _aes, Rsa_Oaep* _rsa);
+	CommandResolver();
 
 	bool Resolve(string _command);
 };

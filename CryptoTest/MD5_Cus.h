@@ -15,5 +15,6 @@ class MD5_Cus
 	MD5 md5;
 public:
 	void GetHash(string _plainText, string& _hash);
+	void GetHash16(string _plainText, string& _hash);
 };
 

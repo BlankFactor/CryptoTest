@@ -10,7 +10,7 @@ using namespace CryptoPP;
 using namespace std;
 using namespace asio;
 
-Rsa_Oaep::Rsa_Oaep()
+Rsa_Oaep::Rsa_Oaep() :BObjectIdentity(*this)
 {
 	cout << "[RSA] : Initializing" << endl;
 	priKey = new RSA::PrivateKey();
@@ -205,7 +205,7 @@ void Rsa_Oaep::EncrypteAndEncode(string _cipherText, string& _out)
 
 		temp.~basic_string();
 	}
-	catch (std::exception& e) {
+	catch (exception& e) {
 		cerr << "[RSA exception] : " << e.what() << endl;
 	}
 }
@@ -221,7 +221,7 @@ void Rsa_Oaep::DecodeAndDecrypte(string _in, string& _plainText)
 
 	temp.~basic_string();
 	}
-	catch (std::exception& e) {
+	catch (exception& e) {
 		cerr << "[RSA exception] : " << e.what() << endl;
 	}
 }

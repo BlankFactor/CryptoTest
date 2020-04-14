@@ -4,6 +4,8 @@
 #include "iostream"
 #include "cstring"
 #include "Rsa_Oaep.h"
+#include "ICryptoFilter.h"
+#include "BObjectIdentity.h"
 
 using namespace std;
 using namespace asio;
@@ -11,7 +13,7 @@ using namespace asio;
 #define PORT 5000
 #define BUFFER 1024
 
-class Connector
+class Connector:public BObjectIdentity
 {
 private:
 	io_service service;
@@ -32,7 +34,9 @@ private:
 	ip::tcp::endpoint* ternimal;
 	ip::tcp::acceptor* acceptor;
 public:
-	Connector(Rsa_Oaep* _rsa);
+	ICryptoFilter* filter;
+
+	Connector();
 
 	bool GetConnected();
 	void SetAESMode(bool _v);

@@ -1,9 +1,9 @@
 #include "Connector.h"
 #include "Universal.h"
 
-Connector::Connector(Rsa_Oaep* _rsa)
+Connector::Connector():BObjectIdentity(*this)
 {
-	rsa = _rsa;
+	rsa = ObjectManager::FindObject<Rsa_Oaep>();
 	port = PORT;
 	sock = new ip::tcp::socket(service);
 	acceptor = new ip::tcp::acceptor(service,ip::tcp::endpoint(ip::tcp::v4(),PORT));

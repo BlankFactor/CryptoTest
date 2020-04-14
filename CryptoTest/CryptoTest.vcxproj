@@ -156,21 +156,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Aes_Ecb.cpp" />
+    <ClCompile Include="BObjectIdentity.cpp" />
     <ClCompile Include="CommandResolver.cpp" />
     <ClCompile Include="Connector.cpp" />
     <ClCompile Include="Converter.cpp" />
     <ClCompile Include="CryptoTest.cpp" />
     <ClCompile Include="MD5_Cus.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Rsa_Oaep.cpp" />
     <ClCompile Include="Sha256.cpp" />
     <ClCompile Include="Universal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Aes_Ecb.h" />
+    <ClInclude Include="BObjectIdentity.h" />
     <ClInclude Include="CommandResolver.h" />
     <ClInclude Include="Connector.h" />
     <ClInclude Include="Converter.h" />
+    <ClInclude Include="ICryptoFilter.h" />
     <ClInclude Include="MD5_Cus.h" />
+    <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Rsa_Oaep.h" />
     <ClInclude Include="Sha256.h" />
     <ClInclude Include="Universal.h" />

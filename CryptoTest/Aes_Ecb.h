@@ -8,11 +8,14 @@
 #include "base64.h"
 #include "Aes.h"
 #include <cstring>
+#include "ICryptoFilter.h"
+#include "MD5_Cus.h"
+#include "BObjectIdentity.h"
 
 using namespace CryptoPP;
 using namespace std;
 
-class Aes_Ecb
+class Aes_Ecb:public ICryptoFilter,public BObjectIdentity
 {
 private:
 	string strKey;
@@ -20,6 +23,8 @@ private:
 
 	ECB_Mode<AES>::Encryption encryptor;
 	ECB_Mode<AES>::Decryption decryptor;
+
+	MD5_Cus md5;
 public:
 	Aes_Ecb(string _key);
 	Aes_Ecb();

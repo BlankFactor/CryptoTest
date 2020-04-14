@@ -12,7 +12,7 @@
 #define CLS 6
 
 
-vector<string> CommandResolver::Split(string _str, string pattern)
+vector<string> CommandResolver::Split(string _str, string _pattern)
 {
 	vector<string> resVec;
 
@@ -21,9 +21,9 @@ vector<string> CommandResolver::Split(string _str, string pattern)
 		return resVec;
 	}
 
-	string strs = _str + pattern;
+	string strs = _str + _pattern;
 
-	size_t pos = strs.find(pattern);
+	size_t pos = strs.find(_pattern);
 	size_t size = strs.size();
 
 	while (pos != string::npos)
@@ -31,7 +31,7 @@ vector<string> CommandResolver::Split(string _str, string pattern)
 		string x = strs.substr(0, pos);
 		resVec.push_back(x);
 		strs = strs.substr(pos + 1, size);
-		pos = strs.find(pattern);
+		pos = strs.find(_pattern);
 	}
 
 	return resVec;
@@ -103,11 +103,14 @@ bool CommandResolver::Connect(vector<string> _com)
 				}
 
 				string m = _com[1];
+
 				if (m == "aes") {
 					con->SetAESMode(true);
+					con->filter = aes;
 				}
 				else if(m == "rsa"){
 					con->SetAESMode(false);
+					con->filter = rsa;
 				}
 				else {
 					cout << "[Resolver] : Inviald command" << endl;
@@ -169,12 +172,8 @@ bool CommandResolver::Decrypto()
 	if (con->GetConnected()) {
 		string temp = "";
 
-		if (con->GetAESMode()) {
-			aes->DecodeAndDecrypte(con->GetMess(), temp);
-		}
-		else {
-			rsa->DecodeAndDecrypte(con->GetMess(),temp);
-		}
+		con->filter->DecodeAndDecrypte(con->GetMess(), temp);
+
 		cout << "[PlainText] : " << temp << endl;
 
 		return true;
@@ -203,14 +202,16 @@ bool CommandResolver::SetKey(vector<string> _com)
 	string newkey = _com[0];
 	aes->SetKey(newkey);
 
-	return true;
+	return false;
 }
 
-CommandResolver::CommandResolver(Connector* _con, Aes_Ecb* _aes, Rsa_Oaep* _rsa)
+CommandResolver::CommandResolver() :BObjectIdentity(*this)
 {
-	con = _con;
-	aes = _aes;
-	rsa = _rsa;
+	con = ObjectManager::FindObject<Connector>();
+	aes = ObjectManager::FindObject<Aes_Ecb>();
+	rsa = ObjectManager::FindObject<Rsa_Oaep>();
+
+	con->filter = aes;
 
 	map["\\connect"] = CONNECT;
 	map["\\listen"] = LISTEN;
@@ -230,39 +231,39 @@ bool CommandResolver::Resolve(string _command)
 
 	switch (map[result[0]])
 	{
-	case CONNECT: {
-		return Connect(result);
-		break;
-	}
-	case LISTEN: {
-		return Listen();
-		break;
-	}
-	case SEND: {
+		case CONNECT: {
+			return Connect(result);
+			break;
+		}
+		case LISTEN: {
+			return Listen();
+			break;
+		}
+		case SEND: {
 
-		break;
-	}
-	case SETKEY: {
-		return SetKey(result);
-		break;
-	}
-	case DECRYPTO: {
-		return Decrypto();
-		break;
-	}
-	case HELP: {
-		displayCommands();
-		return false;
-		break;
-	}
-	case CLS: {
-		system("cls");
-		return false;
-		break;
-	}
-	default: {
-		cout << "[Resolver] : Inviald command" << endl;
-		return false;
-	}
+			break;
+		}
+		case SETKEY: {
+			return SetKey(result);
+			break;
+		}
+		case DECRYPTO: {
+			return Decrypto();
+			break;
+		}
+		case HELP: {
+			displayCommands();
+			return false;
+			break;
+		}
+		case CLS: {
+			system("cls");
+			return false;
+			break;
+		}
+		default: {
+			cout << "[Resolver] : Inviald command" << endl;
+			return false;
+		}
 	}
 }

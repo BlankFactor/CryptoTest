@@ -30,6 +30,7 @@
 #include "MD5.h"
 #include "Sha256.h"
 #include "MD5_Cus.h"
+#include "ObjectManager.h"
 
 using namespace std;
 using namespace CryptoPP;
@@ -39,9 +40,10 @@ using namespace asio;
 #define BUFFER 1024
 #define IPADDR "127.0.0.1"
 char CHARSET[62];
-
+/*
 string source = "HAED";
 Sha256 sha;
+
 void crack(string* _str, int _curIndex = 0) {
 	for (int i = 0; i < 62; i++) {
 		(*_str)[_curIndex] = CHARSET[i];
@@ -63,60 +65,16 @@ void crack(string* _str, int _curIndex = 0) {
 		}
 	}
 }
+*/
 
 int main()
 {
-	/*
-	int j = 0;
-	for (int i = 'a'; i < 'a' + 26; i++,j++) {
-		CHARSET[j] = i;
-	}
 
-	for (int i = 'A'; i < 'A' + 26; i++, j++) {
-		CHARSET[j] = i;
-	}
-
-	for (int i = '0'; i < '0' + 10; i++, j++) {
-		CHARSET[j] = i;
-	}
-
-	unsigned char hash[32] = "";
-	unsigned char hashAfer[32] = "";
-	sha.GetHash(source, hash);
-	string* aa = new string(source.size(), 'a');
-	
-	string path = Universal::GetPath();
-	path.append("\\Hash.txt");
-
-	fstream file;
-	file.open(path, ios::out);
-
-	string ss = "";
-	string dd = "";
-	MD5_Cus md5;
-	
-	cout << "Type '\quit' to exit" << endl;
-
-	while (1) {
-		ss.clear();
-		dd.clear();
-		getline(cin, ss);
-
-		if (ss == "\quit");
-
-		md5.GetHash(ss, dd);
-		cout << dd << endl;
-
-		file << ss << "	Hash:  " << dd << endl;
-		cout << dd.size() << endl;
-	}
-
-	return 0;
-	*/
 	Aes_Ecb aes;
 	Rsa_Oaep rsa;
-	Connector con(&rsa);
-	CommandResolver res(&con,&aes,&rsa);
+	Connector con;
+	CommandResolver res;
+
 	bool sendable;
 
 	cout << "[Resolver] : Type '\\\?' for listing all commands" << endl;
@@ -135,6 +93,7 @@ int main()
 	while (1) {
 		if (con.GetSendable()) {
 			cout << "[Resolver] : Type '\\confirm' to continue or type '\\\?' for listing all commands" << endl;
+			
 			while (1) {
 				getline(cin, c);
 				if (c == "\\confirm") {
@@ -148,12 +107,7 @@ int main()
 
 			getline(cin, c);
 
-			if (con.GetAESMode()) {
-				aes.EncrypteAndEncode(c, c);
-			}
-			else {
-				rsa.EncrypteAndEncode(c, c);
-			}
+			con.filter->EncrypteAndEncode(c, c);
 
 			con.SendMess(c.c_str());
 
@@ -166,6 +120,55 @@ int main()
 	}
 	return 0;
 }
+
+/*
+int j = 0;
+for (int i = 'a'; i < 'a' + 26; i++,j++) {
+	CHARSET[j] = i;
+}
+
+for (int i = 'A'; i < 'A' + 26; i++, j++) {
+	CHARSET[j] = i;
+}
+
+for (int i = '0'; i < '0' + 10; i++, j++) {
+	CHARSET[j] = i;
+}
+
+unsigned char hash[32] = "";
+unsigned char hashAfer[32] = "";
+sha.GetHash(source, hash);
+string* aa = new string(source.size(), 'a');
+
+string path = Universal::GetPath();
+path.append("\\Hash.txt");
+
+fstream file;
+file.open(path, ios::out);
+
+string ss = "";
+string dd = "";
+MD5_Cus md5;
+
+cout << "Type '\quit' to exit" << endl;
+
+while (1) {
+	ss.clear();
+	dd.clear();
+	getline(cin, ss);
+
+	if (ss == "\quit");
+
+	md5.GetHash(ss, dd);
+	cout << dd << endl;
+
+	file << ss << "	Hash:  " << dd << endl;
+	cout << dd.size() << endl;
+}
+
+return 0;
+*/
+
 
 /*
 	AutoSeededRandomPool rng;
